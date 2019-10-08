@@ -1,12 +1,9 @@
 package sample;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -37,7 +34,6 @@ public class Controller implements Initializable {
                 grid.getChildren().add(label);
             }
         }
-
     }
 
     private void addPane(int colIndex, int rowIndex) {
