@@ -57,11 +57,11 @@
                               <Image url="@../images/start_node.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Start Node" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" fx:id ="startNode" text="Start Node" textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
+                        </Button>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER">
@@ -71,11 +71,11 @@
                               <Image url="@../images/end_node.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Target Node" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" fx:id ="targetNode" text="Target Node" textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
+                        </Button>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER">
@@ -127,11 +127,11 @@
                               <Image url="@../images/end_node.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Wall Node" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" fx:id ="wallNode" text="Wall Node" textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
+                        </Button>
                      </children>
                   </HBox>
                </children>
