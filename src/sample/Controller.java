@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -25,6 +27,7 @@ public class Controller implements Initializable {
 
     Model model;
     boolean dragging;
+    List<List<Pane>> panes = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,8 +50,11 @@ public class Controller implements Initializable {
             ColumnConstraints col = new ColumnConstraints();
             col.setMinWidth(20);
             grid.getColumnConstraints().add(col);
+            panes.add(new ArrayList<>());
             for(int j = 0; j < 20; j++){
+                panes.get(i).add(new Pane());
                 Label label = new Label();
+                //label.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET,CornerRadii.EMPTY, Insets.EMPTY)));
                 GridPane.setConstraints(label, i, j, 1,1);
                 GridPane.setHgrow(label, Priority.ALWAYS);
                 GridPane.setVgrow(label, Priority.ALWAYS);
@@ -61,26 +67,25 @@ public class Controller implements Initializable {
     }
 
     private void addPane(int colIndex, int rowIndex) {
-        Pane pane = new Pane();
 
 
-        pane.setOnMouseClicked(e -> {
+        panes.get(colIndex).get(rowIndex).setOnMouseClicked(e -> {
             dragging = !dragging;
             model.selectNode(colIndex,rowIndex);
             System.out.println(model.maze.get(colIndex).get(rowIndex).isStart() + " " + model.maze.get(colIndex).get(rowIndex).isWall());
-            pane.setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
+            panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
 
         });
-        pane.setOnMouseEntered(event -> {
+        panes.get(colIndex).get(rowIndex).setOnMouseEntered(event -> {
             if(dragging && model.getSelectMode() == Model.SelectMode.WALL){
                 model.selectNode(colIndex,rowIndex);
                 System.out.println(model.maze.get(colIndex).get(rowIndex).isStart() + " " + model.maze.get(colIndex).get(rowIndex).isWall());
-                pane.setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
+                panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
 
 
-        grid.add(pane, colIndex, rowIndex);
+        grid.add(panes.get(colIndex).get(rowIndex), colIndex, rowIndex);
     }
 
     public Paint colorDecider(int c,int r){
@@ -96,6 +101,17 @@ public class Controller implements Initializable {
         }
         return null;
     }
+
+    public void update(){
+        for(int c = 0; c < 40; c++){
+            for(int r = 0; r < 20; r++){
+                panes.get(c).get(r).setBackground(new Background(new BackgroundFill(colorDecider(c,r), CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        }
+
+    }
+
+
 
 
 
