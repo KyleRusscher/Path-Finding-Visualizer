@@ -8,15 +8,32 @@ public class Node {
     private boolean isEnd;
     private boolean isVisited;
     private boolean isPath;
+    private int distance;
+    private int row;
+    private int column;
+    private Node prevNode;
 
 
     public Node() {
+        row = -1;
+        column = -1;
+        distance = 100000;
         isWall = false;
         isStart = false;
         isEnd = false;
         isVisited = false;
         isPath = false;
+        prevNode = null;
 
+    }
+    public void empty(){
+        isWall = false;
+        isStart = false;
+        isEnd = false;
+        isVisited = false;
+        isPath = false;
+        prevNode = null;
+        distance = 100000;
     }
 
     public boolean isWall() {
@@ -58,5 +75,21 @@ public class Node {
     public void setPath(boolean path) {
         isPath = path;
     }
+
+    public void setDistance(int dist){distance = dist;}
+
+    public int getDistance(){return this.distance;}
+
+    public void setRow(int row){ this.row = row;}
+
+    public int getRow(){return this.row;}
+
+    public void setColumn(int column){this.column = column;}
+
+    public int getColumn(){return this.column;}
+
+    public void setPrevNode(Node node){this.prevNode = node;}
+
+    public Node getPrevNode(){return this.prevNode;}
 
 }

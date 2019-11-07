@@ -6,9 +6,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.bouncycastle.math.raw.Mod;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +26,10 @@ public class Controller implements Initializable {
     Button targetNode;
     @FXML
     Button wallNode;
+    @FXML
+    Button clearBoard;
+    @FXML
+    MenuItem dijkstra;
 
     Model model;
     boolean dragging;
@@ -43,6 +49,15 @@ public class Controller implements Initializable {
         wallNode.setOnMouseClicked(event -> {
             model.setSelectMode(Model.SelectMode.WALL);
         });
+        clearBoard.setOnMouseClicked(event -> {
+            model.clearBoard();
+            update();
+        });
+        dijkstra.setOnAction(event -> {
+            model.shortestPath();
+            update();
+        });
+
 
         //initialize the grid
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -72,15 +87,16 @@ public class Controller implements Initializable {
         panes.get(colIndex).get(rowIndex).setOnMouseClicked(e -> {
             dragging = !dragging;
             model.selectNode(colIndex,rowIndex);
-            System.out.println(model.maze.get(colIndex).get(rowIndex).isStart() + " " + model.maze.get(colIndex).get(rowIndex).isWall());
+
             panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
 
         });
         panes.get(colIndex).get(rowIndex).setOnMouseEntered(event -> {
             if(dragging && model.getSelectMode() == Model.SelectMode.WALL){
                 model.selectNode(colIndex,rowIndex);
-                System.out.println(model.maze.get(colIndex).get(rowIndex).isStart() + " " + model.maze.get(colIndex).get(rowIndex).isWall());
+
                 panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
+
             }
         });
 
@@ -89,13 +105,15 @@ public class Controller implements Initializable {
     }
 
     public Paint colorDecider(int c,int r){
+        if(model.maze.get(c).get(r).isPath()){
+            return Color.YELLOW;
+        }
         if(model.maze.get(c).get(r).isStart()){
             return Color.BLUE;
         }
         if(model.maze.get(c).get(r).isWall()){
             return Color.BLACK;
         }
-
         if(model.maze.get(c).get(r).isEnd()){
             return Color.RED;
         }
