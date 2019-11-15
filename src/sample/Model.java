@@ -7,17 +7,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Model {
+
+
     enum SelectMode {
         WALL, START, END, PATH
     }
 
     List<List<Node>> maze;
+    List<Node> visitOrder = new ArrayList<>();
+    List<Node> shortestPath = new ArrayList<>();
 
     private SelectMode selectMode;
     private int startC = -1;
     private int startR = -1;
     private int endC = -1;
     private int endR = -1;
+
 
 
     public Model() {
@@ -106,6 +111,7 @@ public class Model {
                     if (currNode.getDistance() == 100000) {
                         return;
                     }
+                    visitOrder.add(currNode);
                     currNode.setVisited(true);
                     // we have found the end node
                     if (currNode.isEnd()) {
@@ -172,7 +178,8 @@ public class Model {
             return;
         } else {
             dijkstra();
-            List<Node> shortestPath = new ArrayList<Node>();
+
+
             Node currNode = maze.get(endC).get(endR);
             while (currNode != null) {
                 currNode.setPath(true);

@@ -1,6 +1,10 @@
 package sample;
 
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -10,7 +14,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.bouncycastle.math.raw.Mod;
+import javafx.util.Duration;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ public class Controller implements Initializable {
         });
         dijkstra.setOnAction(event -> {
             model.shortestPath();
-            update();
+            visualize_algorithm(model.visitOrder, model.shortestPath);
         });
 
 
@@ -80,6 +85,37 @@ public class Controller implements Initializable {
             }
         }
     }
+
+    private void visualize_algorithm(List<Node> visited, List<Node> path){
+
+        Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>() {
+            int visited_index = 1;
+            int path_index = path.size() - 1;
+            @Override
+            public void handle(ActionEvent event) {
+                if(visited_index < visited.size() - 1){
+                    panes.get(visited.get(visited_index).getColumn()).get(visited.get(visited_index).getRow()).setBackground(
+                            new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
+                    visited_index++;
+                }
+                else{
+                    panes.get(path.get(path_index).getColumn()).get(path.get(path_index).getRow()).setBackground(
+                            new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+                    path_index--;
+                }
+
+            }
+        }));
+        pathDelay.setCycleCount(visited.size() + path.size() - 2);
+        pathDelay.play();
+        pathDelay.setOnFinished(event -> {
+            model.visitOrder = new ArrayList<>();
+            model.shortestPath = new ArrayList<>();
+        });
+
+
+    }
+
 
     private void addPane(int colIndex, int rowIndex) {
 
