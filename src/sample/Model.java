@@ -1,9 +1,7 @@
 package sample;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -12,12 +10,16 @@ public class Model {
     enum SelectMode {
         WALL, START, END, PATH
     }
+    enum Algorithm {
+        DIJKSTRA, BFS, ASTAR
+    }
 
     List<List<Node>> maze;
     List<Node> visitOrder = new ArrayList<>();
     List<Node> shortestPath = new ArrayList<>();
 
     private SelectMode selectMode;
+    private Algorithm algorithm;
     private int startC = -1;
     private int startR = -1;
     private int endC = -1;
@@ -44,6 +46,14 @@ public class Model {
 
     public void setSelectMode(SelectMode selectMode) {
         this.selectMode = selectMode;
+    }
+
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(Algorithm algorithm) {
+        this.algorithm = algorithm;
     }
 
     //clears board using empty which sets everything in node to default
@@ -95,7 +105,7 @@ public class Model {
     }
 
 
-    private void dijkstra() {
+    private void dijkstraOrAStar() {
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
             return;
         } else {
@@ -117,7 +127,12 @@ public class Model {
                     if (currNode.isEnd()) {
                         return;
                     }
-                    updateNeighbours(currNode);
+                    if(this.algorithm == Algorithm.DIJKSTRA) {
+                        updateNeighbours(currNode);
+                    }
+                    else{
+                        updateNeighboursForAStar(currNode);
+                    }
                 }
             }
             return;
@@ -132,6 +147,15 @@ public class Model {
             neighbour.setPrevNode(currNode);
         }
     }
+
+    private void updateNeighboursForAStar(Node currNode) {
+        List<Node> neighbours = getNeighbours(currNode);
+        for (Node neighbour : neighbours) {
+            neighbour.setDistance(currNode.getDistance() + 1 + manhattanDistance(currNode));
+            neighbour.setPrevNode(currNode);
+        }
+    }
+
 
     // gets the neighbours of the given node that have been visited
     private List<Node> getNeighbours(Node currNode) {
@@ -156,7 +180,7 @@ public class Model {
 
     // sort nodes so we can keep accessing the nearest node
     private List<Node> sortNodes(List<Node> workingNodes) {
-        workingNodes.sort((h1, h2) -> h1.getDistance() - h2.getDistance());
+        workingNodes.sort(Comparator.comparingInt(Node::getDistance));
         return workingNodes;
     }
 
@@ -171,13 +195,18 @@ public class Model {
         return nodes;
     }
 
-    // calls dijkstra and back tracks from the end node to find the shortest path
+    // calls path finding algorithm and back tracks from the end node to find the shortest path
     // updates all the nodes on the shortest path to having their path value equal to true
     public void shortestPath() {
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
             return;
         } else {
-            dijkstra();
+            if(this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
+                dijkstraOrAStar();
+            }
+            else if(this.algorithm == Algorithm.BFS){
+                breadthFirstSearch();
+            }
 
 
             Node currNode = maze.get(endC).get(endR);
@@ -188,5 +217,43 @@ public class Model {
             }
             return;
         }
+    }
+
+    private void breadthFirstSearch() {
+
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.add(maze.get(startC).get(startR));
+
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.removeFirst();
+            if (currentNode.isVisited() || currentNode.isWall())
+                continue;
+
+            // Mark the node as visited
+            currentNode.setVisited(true);
+            visitOrder.add(currentNode);
+            if (currentNode.isEnd()) {
+                return;
+            }
+            updateNeighbours(currentNode);
+            List<Node> allNeighbors = getNeighbours(currentNode);
+
+            if (allNeighbors == null)
+                continue;
+
+            for (Node neighbor : allNeighbors) {
+                if (!neighbor.isVisited()) {
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+
+    // common tactic to calculate heuristic for A* algorithm
+    private int  manhattanDistance(Node currentNode) {
+        int xChange = Math.abs(currentNode.getRow() - maze.get(endC).get(endR).getRow());
+        int yChange = Math.abs(currentNode.getColumn() - maze.get(endC).get(endR).getColumn());
+
+        return (xChange + yChange);
     }
 }

@@ -35,6 +35,10 @@ public class Controller implements Initializable {
     Button clearBoard;
     @FXML
     MenuItem dijkstra;
+    @FXML
+    MenuItem BFS;
+    @FXML
+    MenuItem aStar;
 
     Model model;
     boolean dragging;
@@ -59,6 +63,17 @@ public class Controller implements Initializable {
             update();
         });
         dijkstra.setOnAction(event -> {
+            model.setAlgorithm(Model.Algorithm.DIJKSTRA);
+            model.shortestPath();
+            visualize_algorithm(model.visitOrder, model.shortestPath);
+        });
+        BFS.setOnAction(event -> {
+            model.setAlgorithm(Model.Algorithm.BFS);
+            model.shortestPath();
+            visualize_algorithm(model.visitOrder, model.shortestPath);
+        });
+        aStar.setOnAction(event -> {
+            model.setAlgorithm(Model.Algorithm.ASTAR);
             model.shortestPath();
             visualize_algorithm(model.visitOrder, model.shortestPath);
         });
