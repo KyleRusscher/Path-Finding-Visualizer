@@ -301,7 +301,7 @@ public class Model {
         try {
             scanner = new Scanner(new File(filename));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return;
         }
 
         scanner.useDelimiter(":");
