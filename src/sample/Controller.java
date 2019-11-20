@@ -35,6 +35,8 @@ public class Controller implements Initializable {
     @FXML
     Button wallNode;
     @FXML
+    Button removeWall;
+    @FXML
     Button clearBoard;
     @FXML
     MenuItem dijkstra;
@@ -69,6 +71,9 @@ public class Controller implements Initializable {
         });
         wallNode.setOnMouseClicked(event -> {
             model.setSelectMode(Model.SelectMode.WALL);
+        });
+        removeWall.setOnMouseClicked(event -> {
+            model.setSelectMode(SelectMode.REMOVE_WALL);
         });
         clearBoard.setOnMouseClicked(event -> {
             model.clearBoard();
@@ -167,7 +172,8 @@ public class Controller implements Initializable {
 
         });
         panes.get(colIndex).get(rowIndex).setOnMouseEntered(event -> {
-            if(dragging && model.getSelectMode() == Model.SelectMode.WALL){
+            if(dragging && model.getSelectMode() == Model.SelectMode.WALL
+                    || dragging && model.getSelectMode() == SelectMode.REMOVE_WALL){
                 model.selectNode(colIndex,rowIndex);
 
                 panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));

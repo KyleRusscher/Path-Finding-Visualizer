@@ -86,20 +86,6 @@
                               <Image url="@../images/end_node.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Unvisited Node" textAlignment="CENTER">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER">
-                     <children>
-                        <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/end_node.png" />
-                           </image>
-                        </ImageView>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Visited Node" textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
@@ -135,6 +121,21 @@
                         </Button>
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/end_node.png" />
+                           </image>
+                        </ImageView>
+                        <Button mnemonicParsing="false" fx:id ="removeWall" text="Remove Wall" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+
                </children>
             </HBox>
          </children>

@@ -8,7 +8,7 @@ public class Model {
 
 
     enum SelectMode {
-        WALL, START, END, PATH
+        WALL, REMOVE_WALL, START, END, PATH
     }
     enum Algorithm {
         DIJKSTRA, BFS, ASTAR
@@ -76,7 +76,12 @@ public class Model {
     public void selectNode(int c, int r) {
         if (selectMode == SelectMode.WALL) {
             if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {
-                maze.get(c).get(r).setWall(!maze.get(c).get(r).isWall());
+                maze.get(c).get(r).setWall(true);
+            }
+        }
+        if (selectMode == SelectMode.REMOVE_WALL) {
+            if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {
+                maze.get(c).get(r).setWall(false);
             }
         }
         if (selectMode == SelectMode.START) {
