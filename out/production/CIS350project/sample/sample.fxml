@@ -33,14 +33,15 @@
                   <MenuButton mnemonicParsing="false" text="Algorithms" textAlignment="CENTER">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Dijkstra" fx:id = "dijkstra" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                      <MenuItem mnemonicParsing="false" text="BFS" fx:id = "BFS" />
+                       <MenuItem mnemonicParsing="false" text="A*" fx:id = "aStar" />
                     </items>
                   </MenuButton>
-                  <MenuButton mnemonicParsing="false" text="Speed: xyz" textAlignment="CENTER">
+                  <MenuButton mnemonicParsing="false" text="Speed: Normal" fx:id = "speed" textAlignment="CENTER">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Fast" />
-                        <MenuItem mnemonicParsing="false" text="Average" />
-                        <MenuItem mnemonicParsing="false" text="Slow" />
+                        <MenuItem mnemonicParsing="false" text="Fast" fx:id = "fast"/>
+                        <MenuItem mnemonicParsing="false" text="normal" fx:id = "normal" />
+                        <MenuItem mnemonicParsing="false" text="Slow" fx:id = "slow" />
                      </items>
                   </MenuButton>
                   <Button mnemonicParsing="false" text="Visualize" />
@@ -54,7 +55,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/start_node.png" />
+                              <Image url="@../images/blue.PNG" />
                            </image>
                         </ImageView>
                         <Button mnemonicParsing="false" fx:id ="startNode" text="Start Node" textAlignment="CENTER">
@@ -68,7 +69,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/end_node.png" />
+                              <Image url="@../images/red.png" />
                            </image>
                         </ImageView>
                         <Button mnemonicParsing="false" fx:id ="targetNode" text="Target Node" textAlignment="CENTER">
@@ -82,21 +83,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/end_node.png" />
-                           </image>
-                        </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Unvisited Node" textAlignment="CENTER">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER">
-                     <children>
-                        <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/end_node.png" />
+                              <Image url="@../images/purple.png" />
                            </image>
                         </ImageView>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Visited Node" textAlignment="CENTER">
@@ -110,7 +97,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/end_node.png" />
+                              <Image url="@../images/yellow.PNG" />
                            </image>
                         </ImageView>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Shortest-path Node" textAlignment="CENTER">
@@ -124,16 +111,26 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/end_node.png" />
+                              <Image url="@../images/black.PNG" />
                            </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" fx:id ="wallNode" text="Wall Node" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" fx:id ="wallNode" text="Create Wall" textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" fx:id ="removeWall" text="Remove Wall" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+
                </children>
             </HBox>
          </children>

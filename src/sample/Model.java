@@ -9,7 +9,7 @@ public class Model {
 
 
     enum SelectMode {
-        WALL, START, END, PATH
+        WALL, REMOVE_WALL, START, END, PATH
     }
     enum Algorithm {
         DIJKSTRA, BFS, ASTAR
@@ -26,7 +26,11 @@ public class Model {
     private int endC = -1;
     private int endR = -1;
 
+    public final static int FAST_SPEED = 2;
+    public final static int NORMAL_SPEED = 20;
+    public final static int SLOW_SPEED = 70;
 
+    public int speed = NORMAL_SPEED;
 
     public Model() {
         maze = new ArrayList<>();
@@ -73,7 +77,12 @@ public class Model {
     public void selectNode(int c, int r) {
         if (selectMode == SelectMode.WALL) {
             if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {
-                maze.get(c).get(r).setWall(!maze.get(c).get(r).isWall());
+                maze.get(c).get(r).setWall(true);
+            }
+        }
+        if (selectMode == SelectMode.REMOVE_WALL) {
+            if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {
+                maze.get(c).get(r).setWall(false);
             }
         }
         if (selectMode == SelectMode.START) {
