@@ -1,6 +1,7 @@
 package sample;
 
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -255,5 +256,65 @@ public class Model {
         int yChange = Math.abs(currentNode.getColumn() - maze.get(endC).get(endR).getColumn());
 
         return (xChange + yChange);
+    }
+
+    public void save(String filename){
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter
+                    (new FileWriter(filename)));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(int c  = 0; c < 40; c++){
+            for(int r=0; r <20; r++){
+                if(maze.get(c).get(r).isWall()){
+                    //walls are a 1
+                    out.print(":1");
+                }else if(c == startC && r == startR){
+                    //start is 2
+                    out.print(":2");
+                }else if (c == endC && r == endR){
+                    //end is 3
+                    out.print(":3");
+                }else{
+                    out.print(":0");
+                }
+            }
+            out.println();
+        }
+        out.close();
+    }
+
+    public void load(String filename){
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File(filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        scanner.useDelimiter(":");
+        for(int c = 0; c < 40; c++){
+            for (int r = 0; r < 20; r++){
+                if(scanner.hasNext()){
+                    String key = scanner.next();
+                    if(key.equals("0")){
+                        maze.get(c).get(r).empty();
+                    }else if(key.equals("1")){
+                        maze.get(c).get(r).setWall(true);
+                    }else if(key.equals("2")){
+                        maze.get(c).get(r).setStart(true);
+                        startC = c;
+                        startR = r;
+                    }else if(key.equals("3")){
+                        maze.get(c).get(r).setEnd(true);
+                        endC = c;
+                        endR = r;
+                    }
+                }
+            }
+        }
     }
 }

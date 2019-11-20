@@ -6,17 +6,23 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +45,15 @@ public class Controller implements Initializable {
     MenuItem BFS;
     @FXML
     MenuItem aStar;
+    @FXML
+    Button save;
+    @FXML
+    Button load;
 
     Model model;
     boolean dragging;
     List<List<Pane>> panes = new ArrayList<>();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,6 +87,15 @@ public class Controller implements Initializable {
             model.setAlgorithm(Model.Algorithm.ASTAR);
             model.shortestPath();
             visualize_algorithm(model.visitOrder, model.shortestPath);
+        });
+
+
+        save.setOnAction(event -> {
+            model.save(SavePopup.display());
+        });
+        load.setOnAction(event -> {
+            model.load(LoadPopup.display());
+            update();
         });
 
 
