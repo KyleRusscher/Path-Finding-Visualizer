@@ -37,7 +37,7 @@
                        <MenuItem mnemonicParsing="false" text="A*" fx:id = "aStar" />
                     </items>
                   </MenuButton>
-                  <MenuButton mnemonicParsing="false" text="Speed" textAlignment="CENTER">
+                  <MenuButton mnemonicParsing="false" text="Speed: Normal" fx:id = "speed" textAlignment="CENTER">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Fast" fx:id = "fast"/>
                         <MenuItem mnemonicParsing="false" text="normal" fx:id = "normal" />

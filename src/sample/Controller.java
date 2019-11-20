@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -47,6 +48,9 @@ public class Controller implements Initializable {
     MenuItem normal;
     @FXML
     MenuItem slow;
+    @FXML
+    MenuButton speed;
+
 
     Model model;
     boolean dragging;
@@ -87,12 +91,15 @@ public class Controller implements Initializable {
         });
         fast.setOnAction(event -> {
             model.speed = FAST_SPEED;
+            speed.setText("Speed: Fast");
         });
         normal.setOnAction(event -> {
             model.speed = NORMAL_SPEED;
+            speed.setText("Speed: Normal");
         });
         slow.setOnAction(event -> {
             model.speed = SLOW_SPEED;
+            speed.setText("Speed: Slow");
         });
 
 
