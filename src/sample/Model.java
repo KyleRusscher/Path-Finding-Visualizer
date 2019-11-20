@@ -25,7 +25,11 @@ public class Model {
     private int endC = -1;
     private int endR = -1;
 
+    public final static int FAST_SPEED = 2;
+    public final static int NORMAL_SPEED = 20;
+    public final static int SLOW_SPEED = 70;
 
+    public int speed = NORMAL_SPEED;
 
     public Model() {
         maze = new ArrayList<>();

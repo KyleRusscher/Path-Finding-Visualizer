@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static sample.Model.*;
+
 public class Controller implements Initializable {
     @FXML
     GridPane grid;
@@ -39,6 +41,12 @@ public class Controller implements Initializable {
     MenuItem BFS;
     @FXML
     MenuItem aStar;
+    @FXML
+    MenuItem fast;
+    @FXML
+    MenuItem normal;
+    @FXML
+    MenuItem slow;
 
     Model model;
     boolean dragging;
@@ -77,6 +85,15 @@ public class Controller implements Initializable {
             model.shortestPath();
             visualize_algorithm(model.visitOrder, model.shortestPath);
         });
+        fast.setOnAction(event -> {
+            model.speed = FAST_SPEED;
+        });
+        normal.setOnAction(event -> {
+            model.speed = NORMAL_SPEED;
+        });
+        slow.setOnAction(event -> {
+            model.speed = SLOW_SPEED;
+        });
 
 
         //initialize the grid
@@ -103,7 +120,7 @@ public class Controller implements Initializable {
 
     private void visualize_algorithm(List<Node> visited, List<Node> path){
 
-        Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>() {
+        Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(model.speed), new EventHandler<ActionEvent>() {
             int visited_index = 1;
             int path_index = path.size() - 1;
             @Override
