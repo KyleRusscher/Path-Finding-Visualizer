@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.bouncycastle.math.raw.Mod;
 
 
 import java.io.IOException;
@@ -49,6 +51,16 @@ public class Controller implements Initializable {
     Button save;
     @FXML
     Button load;
+    @FXML
+    MenuItem fast;
+    @FXML
+    MenuItem normal;
+    @FXML
+    MenuItem slow;
+    @FXML
+    MenuButton speed;
+    @FXML
+    Button removeWall;
 
     Model model;
     boolean dragging;
@@ -69,6 +81,9 @@ public class Controller implements Initializable {
         wallNode.setOnMouseClicked(event -> {
             model.setSelectMode(Model.SelectMode.WALL);
         });
+        removeWall.setOnMouseClicked(event -> {
+            model.setSelectMode(Model.SelectMode.REMOVE_WALL);
+        });
         clearBoard.setOnMouseClicked(event -> {
             model.clearBoard();
             update();
@@ -87,6 +102,18 @@ public class Controller implements Initializable {
             model.setAlgorithm(Model.Algorithm.ASTAR);
             model.shortestPath();
             visualize_algorithm(model.visitOrder, model.shortestPath);
+        });
+        fast.setOnAction(event -> {
+            model.speed = Model.FAST_SPEED;
+            speed.setText("Speed: Fast");
+        });
+        normal.setOnAction(event -> {
+            model.speed = Model.NORMAL_SPEED;
+            speed.setText("Speed: Normal");
+        });
+        slow.setOnAction(event -> {
+            model.speed = Model.SLOW_SPEED;
+            speed.setText("Speed: Slow");
         });
 
 
