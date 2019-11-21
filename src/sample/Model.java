@@ -74,6 +74,18 @@ public class Model {
         endR = -1;
     }
 
+    public void clearPath() {
+        for (int i = 0; i < 40; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (!maze.get(i).get(j).isWall() && !maze.get(i).get(j).isStart() && !maze.get(i).get(j).isEnd()) {
+                    maze.get(i).get(j).empty();
+                }
+                if(maze.get(i).get(j).isStart() || maze.get(i).get(j).isEnd()){
+                    maze.get(i).get(j).setPath(false);
+                }
+            }
+        }
+    }
     public void selectNode(int c, int r) {
         if (selectMode == SelectMode.WALL) {
             if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {

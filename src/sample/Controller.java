@@ -42,6 +42,8 @@ public class Controller implements Initializable {
     @FXML
     Button clearBoard;
     @FXML
+    Button clearPath;
+    @FXML
     MenuItem dijkstra;
     @FXML
     MenuItem BFS;
@@ -61,6 +63,8 @@ public class Controller implements Initializable {
     MenuButton speed;
     @FXML
     Button removeWall;
+    @FXML
+    Button visualize;
 
     Model model;
     boolean dragging;
@@ -88,19 +92,23 @@ public class Controller implements Initializable {
             model.clearBoard();
             update();
         });
+        clearPath.setOnMouseClicked(event -> {
+            model.clearPath();
+            update();
+        });
         dijkstra.setOnAction(event -> {
             model.setAlgorithm(Model.Algorithm.DIJKSTRA);
             model.shortestPath();
-            visualize_algorithm(model.visitOrder, model.shortestPath);
         });
         BFS.setOnAction(event -> {
             model.setAlgorithm(Model.Algorithm.BFS);
             model.shortestPath();
-            visualize_algorithm(model.visitOrder, model.shortestPath);
         });
         aStar.setOnAction(event -> {
             model.setAlgorithm(Model.Algorithm.ASTAR);
             model.shortestPath();
+        });
+        visualize.setOnAction(event -> {
             visualize_algorithm(model.visitOrder, model.shortestPath);
         });
         fast.setOnAction(event -> {
@@ -115,8 +123,6 @@ public class Controller implements Initializable {
             model.speed = Model.SLOW_SPEED;
             speed.setText("Speed: Slow");
         });
-
-
         save.setOnAction(event -> {
             model.save(SavePopup.display());
         });
@@ -149,7 +155,9 @@ public class Controller implements Initializable {
     }
 
     private void visualize_algorithm(List<Node> visited, List<Node> path){
-
+        if(model.shortestPath.isEmpty()){
+            return;
+        }
         Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>() {
             int visited_index = 1;
             int path_index = path.size() - 1;

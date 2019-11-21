@@ -44,9 +44,9 @@
                         <MenuItem mnemonicParsing="false" text="Slow" fx:id = "slow" />
                      </items>
                   </MenuButton>
-                  <Button mnemonicParsing="false" text="Visualize" />
+                  <Button mnemonicParsing="false" text="Visualize" fx:id = "visualize"/>
                   <Button mnemonicParsing="false" text="Clear Board" fx:id ="clearBoard" />
-                  <Button mnemonicParsing="false" text="Pause" />
+                  <Button mnemonicParsing="false" text="Clear Path"  fx:id="clearPath"/>
                   <Button fx:id="save" mnemonicParsing="false" text="Save" />
                   <Button fx:id="load" mnemonicParsing="false" text="Load" />
                </children>
