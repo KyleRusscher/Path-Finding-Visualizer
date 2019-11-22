@@ -127,7 +127,8 @@ public class Controller implements Initializable {
             model.save(SavePopup.display());
         });
         load.setOnAction(event -> {
-            model.load(LoadPopup.display());
+
+            model.load(LoadPopup.display(model));
             update();
         });
 
@@ -211,9 +212,7 @@ public class Controller implements Initializable {
     }
 
     public Paint colorDecider(int c,int r){
-        if(model.maze.get(c).get(r).isPath()){
-            return Color.YELLOW;
-        }
+
         if(model.maze.get(c).get(r).isStart()){
             return Color.BLUE;
         }
@@ -222,6 +221,13 @@ public class Controller implements Initializable {
         }
         if(model.maze.get(c).get(r).isEnd()){
             return Color.RED;
+        }
+
+        if(model.maze.get(c).get(r).isVisited()){
+            return Color.PURPLE;
+        }
+        if(model.maze.get(c).get(r).isPath()){
+            return Color.YELLOW;
         }
         return null;
     }

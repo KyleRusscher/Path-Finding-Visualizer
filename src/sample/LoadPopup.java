@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class LoadPopup {
     static String filename;
 
-    public static String display(){
+    public static String display(Model m){
         filename = "";
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -23,6 +23,7 @@ public class LoadPopup {
         Button load = new Button("Load");
         load.setOnAction(event -> {
             filename = fileText.getText();
+            m.clearBoard();
             window.close();
         });
 
