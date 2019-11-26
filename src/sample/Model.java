@@ -9,7 +9,7 @@ public class Model {
 
 
     enum SelectMode {
-        WALL, REMOVE_WALL, START, END, PATH
+        WALL, REMOVE_WALL, START, END
     }
     enum Algorithm {
         DIJKSTRA, BFS, ASTAR
@@ -61,6 +61,22 @@ public class Model {
         this.algorithm = algorithm;
     }
 
+    public boolean hasStartAndEnd(){
+        boolean start = false;
+        boolean end = false;
+        for (int i = 0; i < 40; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (maze.get(i).get(j).isStart()){
+                    start = true;
+                }
+                if (maze.get(i).get(j).isEnd()){
+                    end = true;
+                }
+            }
+        }
+        return start && end;
+    }
+
     //clears board using empty which sets everything in node to default
     public void clearBoard() {
         for (int i = 0; i < 40; i++) {
@@ -75,6 +91,9 @@ public class Model {
     }
 
     public void clearPath() {
+        if(!hasStartAndEnd()){
+            return;
+        }
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 20; j++) {
                 if (!maze.get(i).get(j).isWall()) {
@@ -129,37 +148,33 @@ public class Model {
 
 
     private boolean dijkstraOrAStar() {
-        if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
-            return false;
-        } else {
-
-            maze.get(startC).get(startR).setDistance(0);
-            List<Node> nodesStillToCheck = getAllNodes();
-            while (nodesStillToCheck.size() != 0) {
-                nodesStillToCheck = sortNodes(nodesStillToCheck);
-                Node currNode = nodesStillToCheck.get(0);
-                nodesStillToCheck.remove(0);
-                if (currNode.isWall() == false) {
-                    // 100000 is our 'infinity' value
-                    if (currNode.getDistance() == 100000) {
-                        return false;
-                    }
-                    visitOrder.add(currNode);
-                    currNode.setVisited(true);
-                    // we have found the end node
-                    if (currNode.isEnd()) {
-                        return true;
-                    }
-                    if(this.algorithm == Algorithm.DIJKSTRA) {
-                        updateNeighbours(currNode);
-                    }
-                    else{
-                        updateNeighboursForAStar(currNode);
-                    }
+        maze.get(startC).get(startR).setDistance(0);
+        List<Node> nodesStillToCheck = getAllNodes();
+        while (nodesStillToCheck.size() != 0) {
+            nodesStillToCheck = sortNodes(nodesStillToCheck);
+            Node currNode = nodesStillToCheck.get(0);
+            nodesStillToCheck.remove(0);
+            if (currNode.isWall() == false) {
+                // 100000 is our 'infinity' value
+                if (currNode.getDistance() == 100000) {
+                    return false;
+                }
+                visitOrder.add(currNode);
+                currNode.setVisited(true);
+                // we have found the end node
+                if (currNode.isEnd()) {
+                    return true;
+                }
+                if(this.algorithm == Algorithm.DIJKSTRA) {
+                    updateNeighbours(currNode);
+                }
+                else{
+                    updateNeighboursForAStar(currNode);
                 }
             }
-            return false;
         }
+        //will never hit this false
+        return false;
     }
 
     //update the distances of the current node's neighbours
@@ -226,7 +241,7 @@ public class Model {
             return false;
         } else {
             if(this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
-               rtnVal = dijkstraOrAStar();
+                rtnVal = dijkstraOrAStar();
             }
             else if(this.algorithm == Algorithm.BFS){
                 rtnVal = breadthFirstSearch();
@@ -262,9 +277,6 @@ public class Model {
             updateNeighbours(currentNode);
             List<Node> allNeighbors = getNeighbours(currentNode);
 
-            if (allNeighbors == null)
-                continue;
-
             for (Node neighbor : allNeighbors) {
                 if (!neighbor.isVisited()) {
                     queue.add(neighbor);
@@ -288,7 +300,7 @@ public class Model {
             out = new PrintWriter(new BufferedWriter
                     (new FileWriter(filename)));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         for(int c  = 0; c < 40; c++){

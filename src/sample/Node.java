@@ -92,4 +92,10 @@ public class Node {
 
     public Node getPrevNode(){return this.prevNode;}
 
+    public boolean isEmpty(){
+        return this.isWall == false && this.isEnd == false && this.isStart == false
+                && this.isPath == false && this.isVisited == false && this.prevNode == null
+                && this.distance == 100000;
+    }
+
 }

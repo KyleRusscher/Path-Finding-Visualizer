@@ -158,7 +158,7 @@ public class Controller implements Initializable {
     }
 
     private void visualize_algorithm(List<Node> visited, List<Node> path){
-        if(model.getAlgorithm() == null){
+        if(model.getAlgorithm() == null || !model.hasStartAndEnd()){
             return;
         }
         if(model.shortestPath.isEmpty()){
