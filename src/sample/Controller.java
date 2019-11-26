@@ -58,6 +58,8 @@ public class Controller implements Initializable {
     @FXML
     MenuItem normal;
     @FXML
+    MenuButton algorithms;
+    @FXML
     MenuItem slow;
     @FXML
     MenuButton speed;
@@ -68,6 +70,7 @@ public class Controller implements Initializable {
 
     Model model;
     boolean dragging;
+    boolean didFindShortestPath = true;
     List<List<Pane>> panes = new ArrayList<>();
 
 
@@ -97,18 +100,19 @@ public class Controller implements Initializable {
             update();
         });
         dijkstra.setOnAction(event -> {
+            algorithms.setText("Algorithm : Dijkstra");
             model.setAlgorithm(Model.Algorithm.DIJKSTRA);
-            model.shortestPath();
         });
         BFS.setOnAction(event -> {
+            algorithms.setText("Algorithm : BFS");
             model.setAlgorithm(Model.Algorithm.BFS);
-            model.shortestPath();
         });
         aStar.setOnAction(event -> {
+            algorithms.setText("Algorithm : A*");
             model.setAlgorithm(Model.Algorithm.ASTAR);
-            model.shortestPath();
         });
         visualize.setOnAction(event -> {
+            didFindShortestPath = model.shortestPath();
             visualize_algorithm(model.visitOrder, model.shortestPath);
         });
         fast.setOnAction(event -> {
@@ -127,7 +131,6 @@ public class Controller implements Initializable {
             model.save(SavePopup.display());
         });
         load.setOnAction(event -> {
-
             model.load(LoadPopup.display(model));
             update();
         });
@@ -143,7 +146,6 @@ public class Controller implements Initializable {
             for(int j = 0; j < 20; j++){
                 panes.get(i).add(new Pane());
                 Label label = new Label();
-                //label.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET,CornerRadii.EMPTY, Insets.EMPTY)));
                 GridPane.setConstraints(label, i, j, 1,1);
                 GridPane.setHgrow(label, Priority.ALWAYS);
                 GridPane.setVgrow(label, Priority.ALWAYS);
@@ -156,15 +158,19 @@ public class Controller implements Initializable {
     }
 
     private void visualize_algorithm(List<Node> visited, List<Node> path){
-        if(model.shortestPath.isEmpty()){
+        if(model.getAlgorithm() == null){
             return;
         }
+        if(model.shortestPath.isEmpty()){
+            model.shortestPath();
+        }
+        int visited_size = didFindShortestPath ? visited.size() -1 : visited.size();
         Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>() {
             int visited_index = 1;
             int path_index = path.size() - 1;
             @Override
             public void handle(ActionEvent event) {
-                if(visited_index < visited.size() - 1){
+                if(visited_index < visited_size){
                     panes.get(visited.get(visited_index).getColumn()).get(visited.get(visited_index).getRow()).setBackground(
                             new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
                     visited_index++;
@@ -177,16 +183,13 @@ public class Controller implements Initializable {
 
             }
         }));
-        pathDelay.setCycleCount(visited.size() + path.size() - 2);
+        pathDelay.setCycleCount(visited.size()+ path.size() - 2);
         pathDelay.play();
         pathDelay.setOnFinished(event -> {
             model.visitOrder = new ArrayList<>();
             model.shortestPath = new ArrayList<>();
         });
-
-
     }
-
 
     private void addPane(int colIndex, int rowIndex) {
 
@@ -222,7 +225,6 @@ public class Controller implements Initializable {
         if(model.maze.get(c).get(r).isEnd()){
             return Color.RED;
         }
-
         if(model.maze.get(c).get(r).isVisited()){
             return Color.PURPLE;
         }
@@ -238,7 +240,6 @@ public class Controller implements Initializable {
                 panes.get(c).get(r).setBackground(new Background(new BackgroundFill(colorDecider(c,r), CornerRadii.EMPTY, Insets.EMPTY)));
             }
         }
-
     }
 
 

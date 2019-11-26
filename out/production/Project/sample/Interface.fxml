@@ -7,30 +7,11 @@
 
 <VBox prefHeight="350.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <MenuBar>
-         <menus>
-            <Menu mnemonicParsing="false" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Close" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
       <VBox prefHeight="67.0" prefWidth="600.0">
          <children>
             <HBox>
                <children>
-                  <MenuButton mnemonicParsing="false" text="Algorithms" textAlignment="CENTER">
+                  <MenuButton mnemonicParsing="false" text="Algorithms" fx:id = "algorithms" textAlignment="CENTER">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Dijkstra" fx:id = "dijkstra" />
                         <MenuItem mnemonicParsing="false" text="BFS" fx:id = "BFS" />

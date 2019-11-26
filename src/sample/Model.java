@@ -128,9 +128,9 @@ public class Model {
     }
 
 
-    private void dijkstraOrAStar() {
+    private boolean dijkstraOrAStar() {
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
-            return;
+            return false;
         } else {
 
             maze.get(startC).get(startR).setDistance(0);
@@ -142,13 +142,13 @@ public class Model {
                 if (currNode.isWall() == false) {
                     // 100000 is our 'infinity' value
                     if (currNode.getDistance() == 100000) {
-                        return;
+                        return false;
                     }
                     visitOrder.add(currNode);
                     currNode.setVisited(true);
                     // we have found the end node
                     if (currNode.isEnd()) {
-                        return;
+                        return true;
                     }
                     if(this.algorithm == Algorithm.DIJKSTRA) {
                         updateNeighbours(currNode);
@@ -158,7 +158,7 @@ public class Model {
                     }
                 }
             }
-            return;
+            return false;
         }
     }
 
@@ -220,15 +220,16 @@ public class Model {
 
     // calls path finding algorithm and back tracks from the end node to find the shortest path
     // updates all the nodes on the shortest path to having their path value equal to true
-    public void shortestPath() {
+    public boolean shortestPath() {
+        boolean rtnVal = true;
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
-            return;
+            return false;
         } else {
             if(this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
-                dijkstraOrAStar();
+               rtnVal = dijkstraOrAStar();
             }
             else if(this.algorithm == Algorithm.BFS){
-                breadthFirstSearch();
+                rtnVal = breadthFirstSearch();
             }
 
 
@@ -238,11 +239,11 @@ public class Model {
                 shortestPath.add(currNode);
                 currNode = currNode.getPrevNode();
             }
-            return;
+            return rtnVal;
         }
     }
 
-    private void breadthFirstSearch() {
+    private boolean breadthFirstSearch() {
 
         LinkedList<Node> queue = new LinkedList<>();
         queue.add(maze.get(startC).get(startR));
@@ -256,7 +257,7 @@ public class Model {
             currentNode.setVisited(true);
             visitOrder.add(currentNode);
             if (currentNode.isEnd()) {
-                return;
+                return true;
             }
             updateNeighbours(currentNode);
             List<Node> allNeighbors = getNeighbours(currentNode);
@@ -270,6 +271,7 @@ public class Model {
                 }
             }
         }
+        return false;
     }
 
     // common tactic to calculate heuristic for A* algorithm
