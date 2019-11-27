@@ -295,30 +295,33 @@ public class Model {
     }
 
     public void save(String filename){
+        if(filename.isEmpty()){
+            return;
+        }
         PrintWriter out = null;
         try {
             out = new PrintWriter(new BufferedWriter
                     (new FileWriter(filename)));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         for(int c  = 0; c < 40; c++){
             for(int r=0; r <20; r++){
                 if(maze.get(c).get(r).isWall()){
                     //walls are a 1
-                    out.print(":1");
+                    out.print("1:");
                 }else if(c == startC && r == startR){
                     //start is 2
-                    out.print(":2");
+                    out.print("2:");
                 }else if (c == endC && r == endR){
                     //end is 3
-                    out.print(":3");
+                    out.print("3:");
                 }else{
-                    out.print(":0");
+                    out.print("0:");
                 }
             }
-            out.println();
+            //out.println("");
         }
         out.close();
     }

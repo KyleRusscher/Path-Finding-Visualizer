@@ -1,4 +1,5 @@
 package sample;
+
 import org.junit.*;
 
 import java.io.FileNotFoundException;
@@ -15,11 +16,12 @@ public class TestModel {
         model = new Model();
         Assert.assertEquals(40, model.maze.size());
     }
+
     @Test
     public void testConstructor2() {
         Model model;
         model = new Model();
-        for (int i = 0; i < 40; i++){
+        for (int i = 0; i < 40; i++) {
             Assert.assertEquals(20, model.maze.get(i).size());
         }
 
@@ -33,6 +35,7 @@ public class TestModel {
         model = new Model();
         Assert.assertEquals(null, model.getSelectMode());
     }
+
     @Test
     public void testSetSelectedNodeNull() {
         Model model;
@@ -40,15 +43,17 @@ public class TestModel {
         model.setSelectMode(null);
         Assert.assertEquals(null, model.getSelectMode());
     }
+
     @Test
     public void testGetAndSetSelectedNodes() {
         Model model;
         model = new Model();
-        for(Model.SelectMode mode : Model.SelectMode.values()){
+        for (Model.SelectMode mode : Model.SelectMode.values()) {
             model.setSelectMode(mode);
             Assert.assertEquals(mode, model.getSelectMode());
         }
     }
+
     @Test
     public void testGetAlgorithmNodeNull() {
         Model model;
@@ -63,11 +68,12 @@ public class TestModel {
         model.setAlgorithm(null);
         Assert.assertEquals(null, model.getAlgorithm());
     }
+
     @Test
     public void testGetAndSetAlgorithms() {
         Model model;
         model = new Model();
-        for(Model.Algorithm alg : Model.Algorithm.values()){
+        for (Model.Algorithm alg : Model.Algorithm.values()) {
             model.setAlgorithm(alg);
             Assert.assertEquals(alg, model.getAlgorithm());
         }
@@ -81,6 +87,7 @@ public class TestModel {
         model = new Model();
         Assert.assertFalse(model.hasStartAndEnd());
     }
+
     @Test
     public void testHasStartAndEnd2() {
         Model model;
@@ -92,7 +99,7 @@ public class TestModel {
 
     // test clear board
     @Test
-    public void testClearBoard(){
+    public void testClearBoard() {
         Model model;
         model = new Model();
         model.clearBoard();
@@ -102,8 +109,9 @@ public class TestModel {
             }
         }
     }
+
     @Test
-    public void testClearBoard2(){
+    public void testClearBoard2() {
         Model model;
         model = new Model();
         model.maze.get(0).get(0).setVisited(true);
@@ -117,37 +125,40 @@ public class TestModel {
 
     // test clear path
     @Test
-    public void testClearPath1(){
+    public void testClearPath1() {
         Model model;
         model = new Model();
-        model.load("ForTestClass.txt");
+        model.load("Path-Finding-Visualizer/ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
         Assert.assertFalse(model.maze.get(0).get(1).isPath() || model.maze.get(0).get(0).isPath());
     }
+
     @Test
-    public void testClearPath2(){
+    public void testClearPath2() {
         Model model;
         model = new Model();
-        model.load("ForTestClass.txt");
+        model.load("Path-Finding-Visualizer/ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
         Assert.assertTrue(model.maze.get(17).get(0).isWall() && model.maze.get(17).get(1).isWall());
     }
+
     @Test
-    public void testClearPath3(){
+    public void testClearPath3() {
         Model model;
         model = new Model();
-        model.load("ForTestClass.txt");
+        model.load("Path-Finding-Visualizer/ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
         Assert.assertTrue(model.maze.get(3).get(6).isStart() && model.maze.get(22).get(8).isEnd());
     }
+
     @Test
-    public void testClearPath4(){
+    public void testClearPath4() {
         Model model;
         model = new Model();
         model.maze.get(0).get(0).setPath(true);
@@ -165,6 +176,7 @@ public class TestModel {
         model.setSelectMode(Model.SelectMode.WALL);
         model.selectNode(5, 20);
     }
+
     @Test(expected = IndexOutOfBoundsException.class)
     public void selectNodeFailCol() {
         Model model;
@@ -172,6 +184,7 @@ public class TestModel {
         model.setSelectMode(Model.SelectMode.WALL);
         model.selectNode(40, 19);
     }
+
     @Test
     public void selectNodeEmpty() {
         Model model;
@@ -180,6 +193,7 @@ public class TestModel {
         model.selectNode(15, 19);
         Assert.assertTrue(model.maze.get(15).get(19).isEmpty());
     }
+
     @Test
     public void selectNodeWall() {
         Model model;
@@ -188,6 +202,7 @@ public class TestModel {
         model.selectNode(15, 19);
         Assert.assertTrue(model.maze.get(15).get(19).isWall());
     }
+
     @Test
     public void selectNodeStart() {
         Model model;
@@ -196,15 +211,17 @@ public class TestModel {
         model.selectNode(15, 19);
         Assert.assertTrue(model.maze.get(15).get(19).isStart());
     }
+
     @Test
     public void selectNodeResetStart() {
         Model model;
         model = new Model();
         model.setSelectMode(Model.SelectMode.START);
         model.selectNode(15, 19);
-        model.selectNode(15,19);
+        model.selectNode(15, 19);
         Assert.assertFalse(model.maze.get(15).get(19).isStart());
     }
+
     @Test
     public void selectNodeEnd() {
         Model model;
@@ -213,6 +230,7 @@ public class TestModel {
         model.selectNode(15, 19);
         Assert.assertTrue(model.maze.get(15).get(19).isEnd());
     }
+
     @Test
     public void selectNodeResetEnd() {
         Model model;
@@ -230,19 +248,21 @@ public class TestModel {
         model.shortestPath();
         Assert.assertFalse(model.hasStartAndEnd());
     }
+
     @Test
     public void DijkstraNoPath() {
         Model model;
         model = new Model();
-        model.load("NoPath.txt");
+        model.load("Path-Finding-Visualizer/NoPath.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         Assert.assertTrue(model.shortestPath() == false);
     }
+
     @Test
     public void DijkstraShortestPath() {
         Model model;
         model = new Model();
-        model.load("BasicPath.txt");
+        model.load("Path-Finding-Visualizer/BasicPath.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         model.shortestPath();
         Assert.assertTrue(
@@ -262,11 +282,12 @@ public class TestModel {
                         model.shortestPath.get(0).getColumn() == 4
         );
     }
+
     @Test
     public void DijkstraAndAStarShortestPath1() {
         Model model;
         model = new Model();
-        model.load("ForTestClass.txt");
+        model.load("Path-Finding-Visualizer/ForTestClass.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -277,11 +298,12 @@ public class TestModel {
         model.shortestPath();
         Assert.assertEquals(tempDijk, model.shortestPath);
     }
+
     @Test
     public void DijkstraAndAStarShortestPath2() {
         Model model;
         model = new Model();
-        model.load("BasicPath.txt");
+        model.load("Path-Finding-Visualizer/BasicPath.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -292,27 +314,30 @@ public class TestModel {
         model.shortestPath();
         Assert.assertEquals(tempDijk, model.shortestPath);
     }
+
     @Test
     public void AStarNoPath() {
         Model model;
         model = new Model();
-        model.load("NoPath.txt");
+        model.load("Path-Finding-Visualizer/NoPath.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         Assert.assertTrue(model.shortestPath() == false);
     }
+
     @Test
     public void BFSNoPath() {
         Model model;
         model = new Model();
-        model.load("NoPath.txt");
+        model.load("Path-Finding-Visualizer/NoPath.txt");
         model.setAlgorithm(Model.Algorithm.BFS);
         Assert.assertTrue(model.shortestPath() == false);
     }
+
     @Test
-    public void BFSShortestPath () {
+    public void BFSShortestPath() {
         Model model;
         model = new Model();
-        model.load("ForTestClass.txt");
+        model.load("Path-Finding-Visualizer/ForTestClass.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -323,21 +348,23 @@ public class TestModel {
         model.shortestPath();
         Assert.assertEquals(tempDijk.size(), model.shortestPath.size());
     }
+
     @Test(expected = NullPointerException.class)
     public void TestBadSave() {
         Model model;
         model = new Model();
         model.save("4<&*");
     }
+
     @Test
     public void TestGoodSave() {
         Model model;
         model = new Model();
-        model.load("BasicPath.txt");
+        model.load("Path-Finding-Visualizer/BasicPath.txt");
         model.maze.get(39).get(0).setWall(true);
-        model.save("SaveTest.txt");
+        model.save("Path-Finding-Visualizer/SaveTest.txt");
         model.clearBoard();
-        model.load("SaveTest.txt");
+        model.load("Path-Finding-Visualizer/SaveTest.txt");
         Assert.assertTrue(model.maze.get(0).get(0).isStart() &&
                 model.maze.get(1).get(0).isWall() &&
                 model.maze.get(2).get(0).isWall() &&
@@ -348,11 +375,12 @@ public class TestModel {
 
 
     }
+
     @Test
     public void TestGoodLoad() {
         Model model;
         model = new Model();
-        model.load("BasicPath.txt");
+        model.load("Path-Finding-Visualizer/BasicPath.txt");
         Assert.assertTrue(model.maze.get(0).get(0).isStart() &&
                 model.maze.get(1).get(0).isWall() &&
                 model.maze.get(2).get(0).isWall() &&
@@ -361,6 +389,7 @@ public class TestModel {
         );
 
     }
+
     @Test
     public void TestBadLoad() {
         Model model;
