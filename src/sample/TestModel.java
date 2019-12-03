@@ -128,7 +128,7 @@ public class TestModel {
     public void testClearPath1() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/ForTestClass.txt");
+        model.load("ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
@@ -139,7 +139,7 @@ public class TestModel {
     public void testClearPath2() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/ForTestClass.txt");
+        model.load("ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
@@ -150,7 +150,7 @@ public class TestModel {
     public void testClearPath3() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/ForTestClass.txt");
+        model.load("ForTestClass.txt");
         model.maze.get(0).get(0).setPath(true);
         model.maze.get(0).get(1).setPath(true);
         model.clearPath();
@@ -253,7 +253,7 @@ public class TestModel {
     public void DijkstraNoPath() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/NoPath.txt");
+        model.load("NoPath.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         Assert.assertTrue(model.shortestPath() == false);
     }
@@ -262,7 +262,7 @@ public class TestModel {
     public void DijkstraShortestPath() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/BasicPath.txt");
+        model.load("BasicPath.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         model.shortestPath();
         Assert.assertTrue(
@@ -287,7 +287,7 @@ public class TestModel {
     public void DijkstraAndAStarShortestPath1() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/ForTestClass.txt");
+        model.load("ForTestClass.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -303,7 +303,7 @@ public class TestModel {
     public void DijkstraAndAStarShortestPath2() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/BasicPath.txt");
+        model.load("BasicPath.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -319,7 +319,7 @@ public class TestModel {
     public void AStarNoPath() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/NoPath.txt");
+        model.load("NoPath.txt");
         model.setAlgorithm(Model.Algorithm.ASTAR);
         Assert.assertTrue(model.shortestPath() == false);
     }
@@ -328,7 +328,7 @@ public class TestModel {
     public void BFSNoPath() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/NoPath.txt");
+        model.load("NoPath.txt");
         model.setAlgorithm(Model.Algorithm.BFS);
         Assert.assertTrue(model.shortestPath() == false);
     }
@@ -337,7 +337,7 @@ public class TestModel {
     public void BFSShortestPath() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/ForTestClass.txt");
+        model.load("ForTestClass.txt");
         model.setAlgorithm(Model.Algorithm.DIJKSTRA);
         model.shortestPath();
         List<Node> tempDijk = model.shortestPath;
@@ -360,11 +360,11 @@ public class TestModel {
     public void TestGoodSave() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/BasicPath.txt");
+        model.load("BasicPath.txt");
         model.maze.get(39).get(0).setWall(true);
-        model.save("Path-Finding-Visualizer/SaveTest.txt");
+        model.save("SaveTest.txt");
         model.clearBoard();
-        model.load("Path-Finding-Visualizer/SaveTest.txt");
+        model.load("SaveTest.txt");
         Assert.assertTrue(model.maze.get(0).get(0).isStart() &&
                 model.maze.get(1).get(0).isWall() &&
                 model.maze.get(2).get(0).isWall() &&
@@ -380,7 +380,7 @@ public class TestModel {
     public void TestGoodLoad() {
         Model model;
         model = new Model();
-        model.load("Path-Finding-Visualizer/BasicPath.txt");
+        model.load("BasicPath.txt");
         Assert.assertTrue(model.maze.get(0).get(0).isStart() &&
                 model.maze.get(1).get(0).isWall() &&
                 model.maze.get(2).get(0).isWall() &&

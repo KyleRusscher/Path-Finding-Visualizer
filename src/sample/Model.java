@@ -198,7 +198,6 @@ public class Model {
     // gets the neighbours of the given node that have been visited
     private List<Node> getNeighbours(Node currNode) {
         List<Node> neighbours = new ArrayList<Node>();
-        ;
         int col = currNode.getColumn();
         int row = currNode.getRow();
         if (col > 0) {

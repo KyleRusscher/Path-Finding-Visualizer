@@ -21,7 +21,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.bouncycastle.math.raw.Mod;
+
 
 
 import java.io.IOException;
@@ -165,7 +165,7 @@ public class Controller implements Initializable {
             model.shortestPath();
         }
         int visited_size = didFindShortestPath ? visited.size() -1 : visited.size();
-        Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>() {
+        Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(model.speed), new EventHandler<ActionEvent>() {
             int visited_index = 1;
             int path_index = path.size() - 1;
             @Override
