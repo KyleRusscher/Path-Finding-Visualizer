@@ -5,12 +5,18 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**********************************************************************
+ * Model class for path finding algorithm project
+ @author Joseph Turnbull, Kyle Russcher and Max Gagnon
+ @version Fall 2019
+ *********************************************************************/
 public class Model {
 
 
     enum SelectMode {
         WALL, REMOVE_WALL, START, END
     }
+
     enum Algorithm {
         DIJKSTRA, BFS, ASTAR
     }
@@ -26,12 +32,30 @@ public class Model {
     private int endC = -1;
     private int endR = -1;
 
+    /**
+     * Fast speed setting for visualize
+     */
     public final static int FAST_SPEED = 2;
+
+    /**
+     * Normal speed setting for visualize
+     */
     public final static int NORMAL_SPEED = 20;
+
+    /**
+     * Slow speed setting for visualize
+     */
     public final static int SLOW_SPEED = 70;
 
+    /**
+     * Class speed value
+     */
     public int speed = NORMAL_SPEED;
 
+    /**
+     * Constructor for Model class
+     * Creates the board with all the nodes of size 40x20
+     */
     public Model() {
         maze = new ArrayList<>();
         for (int i = 0; i < 40; i++) {
@@ -45,31 +69,55 @@ public class Model {
     }
 
 
+    /**
+     * Accessor for the current mode of current node choice
+     * @return current mode of node selection
+     */
     public SelectMode getSelectMode() {
         return selectMode;
     }
 
+
+    /**
+     * Mutator for the current mode of the current node
+     * @param selectMode Mode for node selection
+     */
     public void setSelectMode(SelectMode selectMode) {
         this.selectMode = selectMode;
     }
 
+
+    /**
+     * Accessor for the current algorithm selected
+     * @return current algorithm selected
+     */
     public Algorithm getAlgorithm() {
         return algorithm;
     }
 
+
+    /**
+     * mutator for the current algorithm
+     * @param algorithm current algorithm to be selected
+     */
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
     }
 
-    public boolean hasStartAndEnd(){
+
+    /**
+     * Checks the current maze to see if there is a start and end node
+     * @return whether there is a start and end node or not
+     */
+    public boolean hasStartAndEnd() {
         boolean start = false;
         boolean end = false;
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 20; j++) {
-                if (maze.get(i).get(j).isStart()){
+                if (maze.get(i).get(j).isStart()) {
                     start = true;
                 }
-                if (maze.get(i).get(j).isEnd()){
+                if (maze.get(i).get(j).isEnd()) {
                     end = true;
                 }
             }
@@ -77,7 +125,11 @@ public class Model {
         return start && end;
     }
 
-    //clears board using empty which sets everything in node to default
+
+    /**
+     * Clears board using the empty function and sets al the nodes to
+     * default
+     */
     public void clearBoard() {
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 20; j++) {
@@ -90,8 +142,14 @@ public class Model {
         endR = -1;
     }
 
+
+    /**
+     * Clears everything from the board except walls, the start node
+     * and the end node. Effectively clears all the traces of running
+     * an algorithm
+     */
     public void clearPath() {
-        if(!hasStartAndEnd()){
+        if (!hasStartAndEnd()) {
             return;
         }
         for (int i = 0; i < 40; i++) {
@@ -106,6 +164,12 @@ public class Model {
     }
 
 
+    /**
+     * Takes in a coordinate of the maze and updates the node at that
+     * coordinate to the type of the current node selected
+     * @param c Column value of node to be updated
+     * @param r Row value of node to be updated
+     */
     public void selectNode(int c, int r) {
         if (selectMode == SelectMode.WALL) {
             if (!maze.get(c).get(r).isStart() && !maze.get(c).get(r).isEnd()) {
@@ -165,10 +229,9 @@ public class Model {
                 if (currNode.isEnd()) {
                     return true;
                 }
-                if(this.algorithm == Algorithm.DIJKSTRA) {
+                if (this.algorithm == Algorithm.DIJKSTRA) {
                     updateNeighbours(currNode);
-                }
-                else{
+                } else {
                     updateNeighboursForAStar(currNode);
                 }
             }
@@ -232,17 +295,21 @@ public class Model {
         return nodes;
     }
 
-    // calls path finding algorithm and back tracks from the end node to find the shortest path
-    // updates all the nodes on the shortest path to having their path value equal to true
+
+    /**
+     * Calls path finding algorithm and back tracks from the end node
+     * to find the shortest path. Then it updates all the nodes on the
+     * shortest path to having their path value equal to true
+     * @return boolean value whether there is shortest path found
+     */
     public boolean shortestPath() {
         boolean rtnVal = true;
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
             return false;
         } else {
-            if(this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
+            if (this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
                 rtnVal = dijkstraOrAStar();
-            }
-            else if(this.algorithm == Algorithm.BFS){
+            } else if (this.algorithm == Algorithm.BFS) {
                 rtnVal = breadthFirstSearch();
             }
 
@@ -286,15 +353,21 @@ public class Model {
     }
 
     // common tactic to calculate heuristic for A* algorithm
-    private int  manhattanDistance(Node currentNode) {
+    private int manhattanDistance(Node currentNode) {
         int xChange = Math.abs(currentNode.getRow() - maze.get(endC).get(endR).getRow());
         int yChange = Math.abs(currentNode.getColumn() - maze.get(endC).get(endR).getColumn());
 
         return (xChange + yChange);
     }
 
-    public void save(String filename){
-        if(filename.isEmpty()){
+
+    /**
+     * Saves the current state of the map in text file in our current
+     * path name equal to our parameter
+     * @param filename name that our file will be saved as
+     */
+    public void save(String filename) {
+        if (filename.isEmpty()) {
             return;
         }
         PrintWriter out = null;
@@ -305,18 +378,18 @@ public class Model {
         } catch (Exception e) {
             //e.printStackTrace();
         }
-        for(int c  = 0; c < 40; c++){
-            for(int r=0; r <20; r++){
-                if(maze.get(c).get(r).isWall()){
+        for (int c = 0; c < 40; c++) {
+            for (int r = 0; r < 20; r++) {
+                if (maze.get(c).get(r).isWall()) {
                     //walls are a 1
                     out.print("1:");
-                }else if(c == startC && r == startR){
+                } else if (c == startC && r == startR) {
                     //start is 2
                     out.print("2:");
-                }else if (c == endC && r == endR){
+                } else if (c == endC && r == endR) {
                     //end is 3
                     out.print("3:");
-                }else{
+                } else {
                     out.print("0:");
                 }
             }
@@ -325,7 +398,13 @@ public class Model {
         out.close();
     }
 
-    public void load(String filename){
+
+    /**
+     * Loads a map from a text file that is in our current path name
+     * equal to our parameter given
+     * @param filename name of the file that we are loading
+     */
+    public void load(String filename) {
         Scanner scanner = null;
         try {
             scanner = new Scanner(new File(filename));
@@ -334,19 +413,19 @@ public class Model {
         }
 
         scanner.useDelimiter(":");
-        for(int c = 0; c < 40; c++){
-            for (int r = 0; r < 20; r++){
-                if(scanner.hasNext()){
+        for (int c = 0; c < 40; c++) {
+            for (int r = 0; r < 20; r++) {
+                if (scanner.hasNext()) {
                     String key = scanner.next();
-                    if(key.equals("0")){
+                    if (key.equals("0")) {
                         maze.get(c).get(r).empty();
-                    }else if(key.equals("1")){
+                    } else if (key.equals("1")) {
                         maze.get(c).get(r).setWall(true);
-                    }else if(key.equals("2")){
+                    } else if (key.equals("2")) {
                         maze.get(c).get(r).setStart(true);
                         startC = c;
                         startR = r;
-                    }else if(key.equals("3")){
+                    } else if (key.equals("3")) {
                         maze.get(c).get(r).setEnd(true);
                         endC = c;
                         endR = r;

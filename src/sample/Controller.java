@@ -23,13 +23,17 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**********************************************************************
+ * Controller class for path finding algorithm project
+ @author Joseph Turnbull, Kyle Russcher and Max Gagnon
+ @version Fall 2019
+ *********************************************************************/
 public class Controller implements Initializable {
     @FXML
     GridPane grid;
@@ -68,12 +72,18 @@ public class Controller implements Initializable {
     @FXML
     Button visualize;
 
-    Model model;
-    boolean dragging;
-    boolean didFindShortestPath = true;
-    List<List<Pane>> panes = new ArrayList<>();
+    private Model model;
+    private boolean dragging;
+    private boolean didFindShortestPath = true;
+    private List<List<Pane>> panes = new ArrayList<>();
 
-
+    /**
+     * Initializes the action listeners for the buttons
+     * Initializes the board with all its features, sets up its grid
+     * constraints and add all the panes
+     * @param location URL location for possible web addition
+     * @param resources Bundle of resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         model = new Model();
@@ -138,15 +148,15 @@ public class Controller implements Initializable {
 
         //initialize the grid
         grid.setPadding(new Insets(10, 10, 10, 10));
-        for(int i = 0; i < 40; i++){
+        for (int i = 0; i < 40; i++) {
             ColumnConstraints col = new ColumnConstraints();
             col.setMinWidth(20);
             grid.getColumnConstraints().add(col);
             panes.add(new ArrayList<>());
-            for(int j = 0; j < 20; j++){
+            for (int j = 0; j < 20; j++) {
                 panes.get(i).add(new Pane());
                 Label label = new Label();
-                GridPane.setConstraints(label, i, j, 1,1);
+                GridPane.setConstraints(label, i, j, 1, 1);
                 GridPane.setHgrow(label, Priority.ALWAYS);
                 GridPane.setVgrow(label, Priority.ALWAYS);
                 GridPane.setFillHeight(label, true);
@@ -157,25 +167,25 @@ public class Controller implements Initializable {
         }
     }
 
-    private void visualize_algorithm(List<Node> visited, List<Node> path){
-        if(model.getAlgorithm() == null || !model.hasStartAndEnd()){
+    private void visualize_algorithm(List<Node> visited, List<Node> path) {
+        if (model.getAlgorithm() == null || !model.hasStartAndEnd()) {
             return;
         }
-        if(model.shortestPath.isEmpty()){
+        if (model.shortestPath.isEmpty()) {
             model.shortestPath();
         }
-        int visited_size = didFindShortestPath ? visited.size() -1 : visited.size();
+        int visited_size = didFindShortestPath ? visited.size() - 1 : visited.size();
         Timeline pathDelay = new Timeline(new KeyFrame(Duration.millis(model.speed), new EventHandler<ActionEvent>() {
             int visited_index = 1;
             int path_index = path.size() - 1;
+
             @Override
             public void handle(ActionEvent event) {
-                if(visited_index < visited_size){
+                if (visited_index < visited_size) {
                     panes.get(visited.get(visited_index).getColumn()).get(visited.get(visited_index).getRow()).setBackground(
                             new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
                     visited_index++;
-                }
-                else{
+                } else {
                     panes.get(path.get(path_index).getColumn()).get(path.get(path_index).getRow()).setBackground(
                             new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
                     path_index--;
@@ -183,7 +193,7 @@ public class Controller implements Initializable {
 
             }
         }));
-        pathDelay.setCycleCount(visited.size()+ path.size() - 2);
+        pathDelay.setCycleCount(visited.size() + path.size() - 2);
         pathDelay.play();
         pathDelay.setOnFinished(event -> {
             model.visitOrder = new ArrayList<>();
@@ -196,16 +206,16 @@ public class Controller implements Initializable {
 
         panes.get(colIndex).get(rowIndex).setOnMouseClicked(e -> {
             dragging = !dragging;
-            model.selectNode(colIndex,rowIndex);
+            model.selectNode(colIndex, rowIndex);
 
-            panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
+            panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex, rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
 
         });
         panes.get(colIndex).get(rowIndex).setOnMouseEntered(event -> {
-            if(dragging && model.getSelectMode() == Model.SelectMode.WALL){
-                model.selectNode(colIndex,rowIndex);
+            if (dragging && model.getSelectMode() == Model.SelectMode.WALL) {
+                model.selectNode(colIndex, rowIndex);
 
-                panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex,rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
+                panes.get(colIndex).get(rowIndex).setBackground(new Background(new BackgroundFill(colorDecider(colIndex, rowIndex), CornerRadii.EMPTY, Insets.EMPTY)));
 
             }
         });
@@ -214,37 +224,33 @@ public class Controller implements Initializable {
         grid.add(panes.get(colIndex).get(rowIndex), colIndex, rowIndex);
     }
 
-    public Paint colorDecider(int c,int r){
+    private Paint colorDecider(int c, int r) {
 
-        if(model.maze.get(c).get(r).isStart()){
+        if (model.maze.get(c).get(r).isStart()) {
             return Color.BLUE;
         }
-        if(model.maze.get(c).get(r).isWall()){
+        if (model.maze.get(c).get(r).isWall()) {
             return Color.BLACK;
         }
-        if(model.maze.get(c).get(r).isEnd()){
+        if (model.maze.get(c).get(r).isEnd()) {
             return Color.RED;
         }
-        if(model.maze.get(c).get(r).isVisited()){
+        if (model.maze.get(c).get(r).isVisited()) {
             return Color.PURPLE;
         }
-        if(model.maze.get(c).get(r).isPath()){
+        if (model.maze.get(c).get(r).isPath()) {
             return Color.YELLOW;
         }
         return null;
     }
 
-    public void update(){
-        for(int c = 0; c < 40; c++){
-            for(int r = 0; r < 20; r++){
-                panes.get(c).get(r).setBackground(new Background(new BackgroundFill(colorDecider(c,r), CornerRadii.EMPTY, Insets.EMPTY)));
+    private void update() {
+        for (int c = 0; c < 40; c++) {
+            for (int r = 0; r < 20; r++) {
+                panes.get(c).get(r).setBackground(new Background(new BackgroundFill(colorDecider(c, r), CornerRadii.EMPTY, Insets.EMPTY)));
             }
         }
     }
-
-
-
-
 
 
 }
