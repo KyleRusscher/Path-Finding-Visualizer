@@ -5,13 +5,18 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+
+
 /**********************************************************************
- * Model class for path finding algorithm project
+ * Model class for path finding algorithm project.
  @author Joseph Turnbull, Kyle Russcher and Max Gagnon
  @version Fall 2019
  *********************************************************************/
 public class Model {
 
+    private static final int COL_SIZE = 40;
+    private static int ROW_SIZE = 20;
 
     enum SelectMode {
         WALL, REMOVE_WALL, START, END
@@ -33,34 +38,34 @@ public class Model {
     private int endR = -1;
 
     /**
-     * Fast speed setting for visualize
+     * Fast speed setting for visualize.
      */
-    public final static int FAST_SPEED = 2;
+    public static final int FAST_SPEED = 2;
 
     /**
-     * Normal speed setting for visualize
+     * Normal speed setting for visualize.
      */
-    public final static int NORMAL_SPEED = 20;
+    public static final int NORMAL_SPEED = 20;
 
     /**
-     * Slow speed setting for visualize
+     * Slow speed setting for visualize.
      */
-    public final static int SLOW_SPEED = 70;
+    public static final int SLOW_SPEED = 70;
 
     /**
-     * Class speed value
+     * Class speed value.
      */
     public int speed = NORMAL_SPEED;
 
     /**
-     * Constructor for Model class
+     * Constructor for Model class.
      * Creates the board with all the nodes of size 40x20
      */
     public Model() {
         maze = new ArrayList<>();
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < COL_SIZE; i++) {
             maze.add(new ArrayList<>());
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 maze.get(i).add(new Node());
                 maze.get(i).get(j).setRow(j);
                 maze.get(i).get(j).setColumn(i);
@@ -70,7 +75,7 @@ public class Model {
 
 
     /**
-     * Accessor for the current mode of current node choice
+     * Accessor for the current mode of current node choice.
      * @return current mode of node selection
      */
     public SelectMode getSelectMode() {
@@ -79,7 +84,7 @@ public class Model {
 
 
     /**
-     * Mutator for the current mode of the current node
+     * Mutator for the current mode of the current node.
      * @param selectMode Mode for node selection
      */
     public void setSelectMode(SelectMode selectMode) {
@@ -88,7 +93,7 @@ public class Model {
 
 
     /**
-     * Accessor for the current algorithm selected
+     * Accessor for the current algorithm selected.
      * @return current algorithm selected
      */
     public Algorithm getAlgorithm() {
@@ -97,7 +102,7 @@ public class Model {
 
 
     /**
-     * mutator for the current algorithm
+     * mutator for the current algorithm.
      * @param algorithm current algorithm to be selected
      */
     public void setAlgorithm(Algorithm algorithm) {
@@ -106,14 +111,14 @@ public class Model {
 
 
     /**
-     * Checks the current maze to see if there is a start and end node
+     * Checks the current maze to see if there is a start and end node.
      * @return whether there is a start and end node or not
      */
     public boolean hasStartAndEnd() {
         boolean start = false;
         boolean end = false;
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 if (maze.get(i).get(j).isStart()) {
                     start = true;
                 }
@@ -128,11 +133,11 @@ public class Model {
 
     /**
      * Clears board using the empty function and sets al the nodes to
-     * default
+     * default.
      */
     public void clearBoard() {
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 maze.get(i).get(j).empty();
             }
         }
@@ -146,14 +151,14 @@ public class Model {
     /**
      * Clears everything from the board except walls, the start node
      * and the end node. Effectively clears all the traces of running
-     * an algorithm
+     * an algorithm.
      */
     public void clearPath() {
         if (!hasStartAndEnd()) {
             return;
         }
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 if (!maze.get(i).get(j).isWall()) {
                     maze.get(i).get(j).empty();
                 }
@@ -166,7 +171,7 @@ public class Model {
 
     /**
      * Takes in a coordinate of the maze and updates the node at that
-     * coordinate to the type of the current node selected
+     * coordinate to the type of the current node selected.
      * @param c Column value of node to be updated
      * @param r Row value of node to be updated
      */
@@ -252,7 +257,8 @@ public class Model {
     private void updateNeighboursForAStar(Node currNode) {
         List<Node> neighbours = getNeighbours(currNode);
         for (Node neighbour : neighbours) {
-            neighbour.setDistance(currNode.getDistance() + 1 + manhattanDistance(currNode));
+            neighbour.setDistance(currNode.getDistance() + 1
+                    + manhattanDistance(currNode));
             neighbour.setPrevNode(currNode);
         }
     }
@@ -275,7 +281,8 @@ public class Model {
         if (row < maze.get(0).size() - 1) {
             neighbours.add(maze.get(col).get(row + 1));
         }
-        return neighbours.stream().filter(neighbour -> !neighbour.isVisited()).collect(Collectors.toList());
+        return neighbours.stream().filter(neighbour -> !neighbour.isVisited()).
+                collect(Collectors.toList());
     }
 
     // sort nodes so we can keep accessing the nearest node
@@ -287,8 +294,8 @@ public class Model {
     // puts all nodes into one list
     private List<Node> getAllNodes() {
         List<Node> nodes = new ArrayList<Node>();
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 nodes.add(maze.get(i).get(j));
             }
         }
@@ -307,7 +314,8 @@ public class Model {
         if (startC == -1 || startR == -1 || endC == -1 || endR == -1) {
             return false;
         } else {
-            if (this.algorithm == Algorithm.DIJKSTRA || this.algorithm == Algorithm.ASTAR) {
+            if (this.algorithm == Algorithm.DIJKSTRA
+                    || this.algorithm == Algorithm.ASTAR) {
                 rtnVal = dijkstraOrAStar();
             } else if (this.algorithm == Algorithm.BFS) {
                 rtnVal = breadthFirstSearch();
@@ -331,8 +339,9 @@ public class Model {
 
         while (!queue.isEmpty()) {
             Node currentNode = queue.removeFirst();
-            if (currentNode.isVisited() || currentNode.isWall())
+            if (currentNode.isVisited() || currentNode.isWall()) {
                 continue;
+            }
 
             // Mark the node as visited
             currentNode.setVisited(true);
@@ -354,8 +363,10 @@ public class Model {
 
     // common tactic to calculate heuristic for A* algorithm
     private int manhattanDistance(Node currentNode) {
-        int xChange = Math.abs(currentNode.getRow() - maze.get(endC).get(endR).getRow());
-        int yChange = Math.abs(currentNode.getColumn() - maze.get(endC).get(endR).getColumn());
+        int xChange = Math.abs(currentNode.getRow()
+                - maze.get(endC).get(endR).getRow());
+        int yChange = Math.abs(currentNode.getColumn()
+                - maze.get(endC).get(endR).getColumn());
 
         return (xChange + yChange);
     }
@@ -372,14 +383,14 @@ public class Model {
         }
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new BufferedWriter
-                    (new FileWriter(filename)));
+            out = new PrintWriter(new BufferedWriter(
+                    new FileWriter(filename)));
 
         } catch (Exception e) {
             //e.printStackTrace();
         }
-        for (int c = 0; c < 40; c++) {
-            for (int r = 0; r < 20; r++) {
+        for (int c = 0; c < COL_SIZE; c++) {
+            for (int r = 0; r < ROW_SIZE; r++) {
                 if (maze.get(c).get(r).isWall()) {
                     //walls are a 1
                     out.print("1:");
@@ -401,7 +412,7 @@ public class Model {
 
     /**
      * Loads a map from a text file that is in our current path name
-     * equal to our parameter given
+     * equal to our parameter given.
      * @param filename name of the file that we are loading
      */
     public void load(String filename) {
@@ -413,8 +424,8 @@ public class Model {
         }
 
         scanner.useDelimiter(":");
-        for (int c = 0; c < 40; c++) {
-            for (int r = 0; r < 20; r++) {
+        for (int c = 0; c < COL_SIZE; c++) {
+            for (int r = 0; r < ROW_SIZE; r++) {
                 if (scanner.hasNext()) {
                     String key = scanner.next();
                     if (key.equals("0")) {

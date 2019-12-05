@@ -10,9 +10,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class LoadPopup {
-    static String filename;
+    /**
+     * The filename we receive from the user.
+     */
+    private static String filename;
 
-    public static String display(Model m){
+    /**
+     * Function that displays a popup window prompting for a filename to load.
+     * @param m the model that is being used.
+     * @return The string that is entered into the text field.
+     */
+    public static String display(Model m) {
         filename = "";
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);

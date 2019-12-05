@@ -242,7 +242,7 @@ public class TestModel {
     }
 
     @Test
-    public void ShortestPathNoStartEnd() {
+    public void shortestPathNoStartEnd() {
         Model model;
         model = new Model();
         model.shortestPath();
@@ -250,7 +250,7 @@ public class TestModel {
     }
 
     @Test
-    public void DijkstraNoPath() {
+    public void dijkstraNoPath() {
         Model model;
         model = new Model();
         model.load("NoPath.txt");
@@ -259,7 +259,7 @@ public class TestModel {
     }
 
     @Test
-    public void DijkstraShortestPath() {
+    public void dijkstraShortestPath() {
         Model model;
         model = new Model();
         model.load("BasicPath.txt");
@@ -284,7 +284,7 @@ public class TestModel {
     }
 
     @Test
-    public void DijkstraAndAStarShortestPath1() {
+    public void dijkstraAndAStarShortestPath1() {
         Model model;
         model = new Model();
         model.load("ForTestClass.txt");
@@ -300,7 +300,7 @@ public class TestModel {
     }
 
     @Test
-    public void DijkstraAndAStarShortestPath2() {
+    public void dijkstraAndAStarShortestPath2() {
         Model model;
         model = new Model();
         model.load("BasicPath.txt");
@@ -316,7 +316,7 @@ public class TestModel {
     }
 
     @Test
-    public void AStarNoPath() {
+    public void aStarNoPath() {
         Model model;
         model = new Model();
         model.load("NoPath.txt");
@@ -350,14 +350,14 @@ public class TestModel {
     }
 
     @Test(expected = NullPointerException.class)
-    public void TestBadSave() {
+    public void testBadSave() {
         Model model;
         model = new Model();
         model.save("4<&*");
     }
 
     @Test
-    public void TestGoodSave() {
+    public void testGoodSave() {
         Model model;
         model = new Model();
         model.load("BasicPath.txt");
@@ -377,7 +377,7 @@ public class TestModel {
     }
 
     @Test
-    public void TestGoodLoad() {
+    public void testGoodLoad() {
         Model model;
         model = new Model();
         model.load("BasicPath.txt");
@@ -391,7 +391,7 @@ public class TestModel {
     }
 
     @Test
-    public void TestBadLoad() {
+    public void testBadLoad() {
         Model model;
         model = new Model();
         model.load("NoSuchFile.txt");

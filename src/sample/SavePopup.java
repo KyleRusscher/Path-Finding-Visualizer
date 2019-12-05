@@ -10,9 +10,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class SavePopup {
-    static String filename;
+    /**
+     * The filename we receive from the user.
+     */
+    private static String filename;
 
-    public static String display(){
+    /**
+     * Function that displays a popup window prompting for a filename to load.
+     * @return The string that is entered into the text field.
+     */
+    public static String display() {
         filename = "";
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
